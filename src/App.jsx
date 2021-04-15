@@ -9,6 +9,7 @@ function App() {
   const  [tareas, setTareas] = React.useState([])
   const  [modoEdicion, setModoEdicion ] = React.useState( false )
   const  [id, setId] = React.useState('')
+  const  [error, setError] = React.useState( null)
 
 
   const agregarTarea = e => {
@@ -17,6 +18,7 @@ function App() {
 
     if( !tarea.trim()) {
        console.log('Esta vacio  ')
+       setError('Escriba algo por favor')
        return
     }
 
@@ -26,6 +28,7 @@ function App() {
     ])
 
     setTarea('')
+    setError( null )
     console.log('ya limpio')
    
   }
@@ -49,6 +52,7 @@ function App() {
 
     if( !tarea.trim()) {
        console.log('Esta vacio  ')
+       setError('Escriba algo por favor')
        return
     }
 
@@ -59,6 +63,11 @@ function App() {
     setModoEdicion( false )
     setTarea( '' )
     setId('')                                
+  }
+
+  const limpiarTarea=(e)=> {
+    console.log('limpiar tarea')
+    setError( null)
   }
 
   
@@ -90,11 +99,16 @@ function App() {
         <div className="col-4">
           <h4 className="text-center">{ modoEdicion? 'Editar Tarea': 'Agregar Tarea'}</h4>
             <form onSubmit={ modoEdicion? editarTarea : agregarTarea}>
+              {
+                error? <span className="text-danger">{ error }</span>: null
+              }
+              
               <input
                   type="text"
                   className="form-control mb-2"
                   placeholder="Ingrese Tarea"
                   onChange={ e => setTarea( e.target.value )}
+                  onClick={ limpiarTarea }
                   value={tarea}
               />
               {
